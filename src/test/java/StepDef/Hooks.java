@@ -14,7 +14,7 @@ public class Hooks {
 
     @Before
     public void browserSetup(Scenario scenario) {
-        String browserName = System.getProperty("browser", "chromium"); // default chromium
+        String browserName = System.getProperty("browser", "edge"); // default chromium
         playwright = Playwright.create();
 
         switch (browserName.toLowerCase()) {
@@ -24,6 +24,11 @@ public class Hooks {
             case "chrome":
                 browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
                         .setChannel("chrome")
+                        .setHeadless(false));
+                break;
+            case "edge":
+                browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+                        .setChannel("msedge")
                         .setHeadless(false));
                 break;
             case "firefox":
