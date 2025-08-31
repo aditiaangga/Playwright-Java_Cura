@@ -20,12 +20,12 @@ Feature: Check Appointment CURA
     Examples:
       | City      | Healthcare  | Date        | Comment     |
       | Tokyo     | Medicare    | 20/12/2025  | Thank You   |
-      | Hongkong  | Medicaid    | 20/03/2025  | Danke       |
-      | Seoul     | None        | 23/03/2025  | Terimakasih |
-      | Hongkong  | Medicare    | 29/03/2025  | Matursuwun  |
+      | Hongkong  | Medicaid    | 20/10/2025  | Danke       |
+      | Seoul     | None        | 23/11/2025  | Terimakasih |
+      | Hongkong  | Medicare    | 29/09/2025  | Matursuwun  |
 
   Scenario: User want to Appointment Success Required Field
     Given User Open website CURA Healthcare with browser
     When User input username "John Doe", password "ThisIsNotAPassword" and Click Sign In
-    And User fill the Date "02/02/2024" about Appointment
+    And User fill the Date "15/11/2025" about Appointment
     Then User verify Appointment

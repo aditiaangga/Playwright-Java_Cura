@@ -1,10 +1,18 @@
 package pages;
 
 import com.microsoft.playwright.*;
+import utils.ScreenshotUtil;
 import org.junit.jupiter.api.Assertions;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class Homepage {
     Page page;
+    ScreenshotUtil ss = new ScreenshotUtil(page);
+
     public Homepage(Page page){
         this.page = page;
     }
@@ -20,19 +28,24 @@ public class Homepage {
         String homepage = page.locator(makeAppointment).textContent();
         System.out.println(homepage);
         homepage.equals("Make Appointment");
+        ss.takeScreenshot("Homepage");
     }
 
     public void clickMakeAppointment() {
 //        page.wait(1000);
+        ss.takeScreenshot("Make Appointment");
         page.evaluate("window.scrollBy(0,-500)");
 //        page.wait(1000);
+        ss.takeScreenshot("Make Appointment");
         page.locator(buttonMakeAppointment).click();
     }
 
     public void goToMakeAppointment(){
 //        page.wait(1000);
+        ss.takeScreenshot("Make Appointment");
         page.evaluate("window.scrollBy(0,-500)");
 //        page.wait(1000);
+        ss.takeScreenshot("Make Appointment");
         page.evaluate("window.scrollBy(0,500)");
     }
 
@@ -49,11 +62,24 @@ public class Homepage {
     }
 
     public void date(String date){
-//        page.locator(visitDate).fill(date);
-        page.locator(visitDate).type(date);
-//        page.locator(visitDate).click();
-//        page.locator("//div[@class='datepicker-days']//th[@class='next']").click();
-//        page.locator("//td[.='"+date+"']");
+//        page.locator(visitDate).type(date);
+
+        // Set tanggal tertentu dalam format dd/MM/yyyy
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate targetDate = LocalDate.parse(date, formatter);
+
+        // Ambil 3 huruf pertama dari nama bulan (contoh: "Feb" untuk February)
+        String month = targetDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).substring(0, 3);
+        int year = targetDate.getYear();
+        int day = targetDate.getDayOfMonth();
+
+        // Pilih tanggal di datepicker
+        page.locator("//label[@for='txt_visit_date']").click();
+        page.locator("(//th[@class='datepicker-switch'])[1]").click();
+        page.locator("(//th[@class='datepicker-switch'])[2]").click();
+        page.locator("//span[text()='" + year + "']").click();
+        page.locator("//span[text()='" + month + "']").click();
+        page.locator("//td[text()='" + day + "']").click();
     }
 
     public void comment(String com){
@@ -65,19 +91,17 @@ public class Homepage {
     }
 
     public void emptyValidation(){
-        Locator required = page.locator(visitDate);
-        System.out.println(required.getAttribute("required"));
+        Locator date = page.locator(visitDate);
 
-//        WebElement visitDate = driver.findElement(By.name("visit_date"));
-//        Boolean isRequiredVisitDate = Boolean.valueOf(driver.findElement(By.name("visit_date")).getAttribute("required"));
-//        //visitDate.getAttribute("required");
-//        System.out.println(isRequiredVisitDate);
-//        visitDate.isDisplayed();
-//        String getTextVisitDate = visitDate.getText();
-//        Assertions.assertEquals(getTextVisitDate , "");
-//        Assertions.assertEquals(isRequiredVisitDate , "true");
-////        Assertions.assertEquals(getTextVisitDate , "test");
-//        String message = visitDate.getAttribute("validationMessage");
-//        System.out.println("message : " + message);
+        // Ambil element handle
+        ElementHandle element = date.elementHandle();
+
+        // Ambil validationMessage dari JS
+        String validationMessage = (String) element.evaluate("el => el.validationMessage");
+        System.out.println("Validation Message: " + validationMessage);
+
+        // Assert sesuai ekspektasi
+        Assertions.assertEquals("Please fill out this field.", validationMessage);
+        ss.takeScreenshot("Empty Validation");
     }
 }
