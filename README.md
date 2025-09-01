@@ -27,12 +27,12 @@ Playwright-Java_Cura/<br>
 ## 🚀 Cara Menjalankan
 
 1. Clone repositori ini:
-   git clone https://github.com/aditiaangga/Playwright-Java_Cura.git<br>
    ```java
+   git clone https://github.com/aditiaangga/Playwright-Java_Cura.git<br>
    cd Playwright-Java_Cura
    ```
 
-2. Jalankan perintah Maven untuk menjalankan test:<br>
+3. Jalankan perintah Maven untuk menjalankan test:<br>
    ```java
    mvn test
    ```
