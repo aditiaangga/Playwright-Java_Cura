@@ -28,7 +28,7 @@ Playwright-Java_Cura/<br>
 
 1. Clone repositori ini:
    ```java
-   git clone https://github.com/aditiaangga/Playwright-Java_Cura.git<br>
+   git clone https://github.com/aditiaangga/Playwright-Java_Cura.git
    cd Playwright-Java_Cura
    ```
 
