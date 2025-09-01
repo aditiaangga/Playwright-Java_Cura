@@ -28,13 +28,19 @@ Playwright-Java_Cura/<br>
 
 1. Clone repositori ini:
    git clone https://github.com/aditiaangga/Playwright-Java_Cura.git<br>
+   ```java
    cd Playwright-Java_Cura
+   ```
 
 2. Jalankan perintah Maven untuk menjalankan test:<br>
+   ```java
    mvn test
+   ```
 
-3. Pastikan Playwright dependencies sudah terinstall:<br>
+4. Pastikan Playwright dependencies sudah terinstall:<br>
+   ```java
    mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
+   ```
 
 ## ✅ Fitur yang Diuji
 
