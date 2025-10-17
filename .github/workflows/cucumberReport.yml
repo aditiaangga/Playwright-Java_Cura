@@ -1,0 +1,55 @@
+name: Cucumber Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser'
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - chrome
+          - firefox
+          - edge
+          - webkit
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Log Start Time (WIB) on Windows
+        shell: pwsh
+        run: |
+            $TimeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
+            $CurrentTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $TimeZone)
+            $FormattedTime = $CurrentTime.ToString("dddd, d MMMM yyyy - HH:mm:ss 'WIB'")
+            echo "Job started at $FormattedTime"
+            
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run Cucumber Tests ${{ github.event.inputs.browser }}
+        run: mvn clean verify -Dbrowser=${{ github.event.inputs.browser }}
+
+      - name: Upload Cucumber Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: target/cucumber-html-reports
+
+      - name: Upload Generated Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-artifacts
+          path: target
