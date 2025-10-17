@@ -4,6 +4,8 @@ import com.microsoft.playwright.*;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Hooks {
 
@@ -11,6 +13,7 @@ public class Hooks {
     private static Browser browser;
     private static Page page;
     private static Scenario currentScenario;
+    private static final Logger logger = LogManager.getLogger(Hooks.class);
 
     @Before
     public void browserSetup(Scenario scenario) {
@@ -49,8 +52,8 @@ public class Hooks {
 
     private void logSystemInfo(String browserName) {
         BrowserContext context = page.context();
-        System.out.println("🚀 Browser: " + browserName);
-        System.out.println("🖥️ OS: " + System.getProperty("os.name") + " " +
+        logger.info("🚀 Browser: " + browserName);
+        logger.info("🖥️ OS: " + System.getProperty("os.name") + " " +
                 System.getProperty("os.version") + " (" + System.getProperty("os.arch") + ")");
     }
 
